@@ -25,11 +25,23 @@ reverse engineering and static recompilation.
 
 ## Requirements
 
-**The original game**, complete:
+**You must own the original game files.** This project was made and tested with the
+following versions:
 
-- the **installed game folder** (full install), containing `SF2TURBO.EXE` version 1.0
-  (sha256 `279144e7d6e9ab6c6a65c72dc367ebef9a0c6113153594525e444d399407167a`);
-- the **CD image** as `.cue` + `.bin`, for the music.
+| File | Size | MD5 |
+|---|---:|---|
+| `SF2.bin`: CD image (1 data track + 44 audio tracks) | 605,941,056 bytes | `fb643eae2b097d3804a261f486a35bf2` |
+| `SF2TURBO.EXE` v1.0 (in the installed game folder) | 1,900,544 bytes | `9cc4e69eb5f09864babae470b803345c` |
+
+You need:
+
+- the **installed game folder**, from a full install of the CD. It contains `SF2TURBO.EXE`
+  and the game data (`SPRITES`, `LEVELS`, `SFX`…). The build checks the exe (sha256
+  `279144e7d6e9ab6c6a65c72dc367ebef9a0c6113153594525e444d399407167a`);
+- the **CD image** as `.cue` + `.bin`, for the music. The `.cue` only lists the tracks, so its
+  checksum depends on the file name it points to.
+
+Check your files with `md5sum SF2.bin SF2TURBO.EXE`.
 
 **To build:**
 
