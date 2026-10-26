@@ -1,0 +1,9 @@
+# Functions replaced by hand-written C (hex addresses).
+16eee6  # obj_anim_step (src/game/anim.c)
+16b5e4  # fight_frame: wait for the next tick (src/platform/overrides.c)
+140d29  # sound_init        -> sfx.c mixer (replaces the HMI driver)
+1410d1  # sound: start sample
+1411f1  # sound: announcer still playing?
+141224  # sound: stop sample
+141278  # sound: sample volume
+1412a1  # sound: shutdown

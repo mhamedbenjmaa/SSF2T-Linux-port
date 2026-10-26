@@ -1,0 +1,19 @@
+# build outputs
+build/
+/sf2t
+/sf2t.exe
+
+# recompiled game code: generated from your own SF2TURBO.EXE (make GAME=...),
+# it is the game's code and must never be committed
+src/recomp/gen_*.c
+src/recomp/funcs.h
+src/recomp/functable.c
+src/recomp/links.c
+src/recomp/apis.h
+src/recomp/.generated
+
+# game files
+*.EXE
+*.exe
+*.bin
+*.cue

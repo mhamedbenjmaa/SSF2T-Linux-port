@@ -1,0 +1,72 @@
+# SF2TURBO.EXE (v1.0, sha256 279144e7...167a) - identified symbols
+# address  kind  name  [notes]
+# kind: fn = function, var = global variable, tbl = table
+#
+# --- startup / flow ---
+110000 fn  entry                    Borland PE startup stub
+2173dc fn  __startup                Borland RTL startup, calls main through table at 22002c
+16d7ea fn  main
+148d08 fn  game_flow                attract / select / fight / ending sequence, called by main
+16c2d8 fn  fight_loop               round loop; round intro waits for announcer sample (1411f1)
+16b5e4 fn  fight_frame              one frame of the fight, called by fight_loop
+1411f1 fn  announcer_busy           1 while the round announcer sample still plays
+205429 fn  sample_done              (bank, slot) -> 1 when sample flag 0x8000 is cleared
+140184 fn  music_update             restarts the stage CD track when it ends
+16b03a fn  load_tables              misc\shadow.tbl ...
+14878c fn  config_load              resource.cfg
+148a74 fn  config_save              resource.cfg
+157ec0 fn  hiscores_load            sf2hiscr.dat
+157f63 fn  hiscores_save            sf2hiscr.dat
+13fc40 fn  cd_check                 looks for sf2turbo.1 on the CD, write test sf2test.tst
+140d29 fn  sound_init               KoolKat/HMI detection + driver init
+1fae0f fn  fatal_error              prints "Fatal Error!" and exits
+1faa02 fn  file_load_unpack         loads a file, decompresses it ("Allocating Unpack Buffer")
+13ef91 fn  mem_free_dbg             debug heap free ("Attempt to free block")
+13edef fn  mem_report_leaks         "Non-freed block"
+#
+# --- low level (platform) ---
+158abe fn  isr_keyboard             int 09h handler
+158b68 fn  isr_timer                int 08h handler; game tick when 16.16 accumulator 2f02b4 += 2f02b8 overflows
+207d73 fn  timer_callbacks          runs the sound library timer events (table 243294)
+158cf1 fn  pit_set_rate             programs PIT channel 0 from 2f02b0
+158d06 fn  isr_install_keyboard
+158d40 fn  isr_remove_keyboard
+158d6a fn  isr_install_timer
+158d9a fn  isr_remove_timer
+15970a fn  vga_wait_retrace         polls 3DAh bit 3
+15971c fn  joy_read_buttons         port 201h
+15972f fn  joy_read_axis            port 201h timing loop
+14c314 fn  vga_set_palette          copies 768 bytes, writes DAC 3C8h/3C9h
+203f21 fn  cd_device_status         MSCDEX ioctl 6 -> status bits | busy (0x200)
+20434b fn  cd_set_volume            MSCDEX ioctl output 3 (audio channel control)
+2043bb fn  mscdex_request           DPMI 0300h -> real-mode int 2Fh AX=1510h
+#
+# --- arcade (68000) code translated to x86: pseudo registers ---
+2f45d0 var d0                       16/32-bit scratch, result register
+2f45d4 var d1
+2f45d8 var d2
+2f45dc var d3
+2f45e0 var d4
+2f45e4 var d5
+2f45e8 var d6
+2f4e80 var cur_obj                  pointer to the current object (like a6), used by 6286 functions
+2f4e84 var other_obj                second object pointer (opponent?)
+#
+# --- object structure (offsets from cur_obj), first guesses ---
+# +0x55  short  facing / side flag
+# +0x7d  int    position (16.16 fixed)  - axis to confirm
+# +0x81  int    position (16.16 fixed), clamped at 0x280000
+# +0xa1..+0xa7  short  velocities / accelerations (a1 -= a3, a5 -= a7)
+# +0x157 short  most used field (4441 refs): state / routine index?
+# +0x15f short  animation frame index
+# +0x1bb int    animation table pointer (entries of 0x18 bytes: +2 duration, +4 ?, +6 next frame, +0x12 flag)
+# +0x1cf short  animation frame timer
+# +0x1d1 short  value copied from the frame entry +4
+16eee6 fn  obj_anim_step            1498 callers: decrements frame timer, loads next frame
+#
+# --- sound library ---
+204000 tbl KoolKat/HMI SOS glue (204000-20bfff); driver files drv\hmidet.386, hmidrv.386, hmimdrv.386
+2428e0 tbl sample_ptrs              far pointers (sel:off) to driver sample slots, 0x80 per bank, 8 per slot
+#
+# --- Borland C RTL ---
+20c000 tbl Borland C++ 4.x RTL (20c000-218fff)
