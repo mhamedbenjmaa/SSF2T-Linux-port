@@ -94,7 +94,8 @@ Without a CD image, the game runs without music.
 These are the game's default keys. Enter is Start and Escape goes back.
 
 Gamepads, Xbox layout: d-pad or left stick to move, X Y RB for punches, A B RT for kicks,
-Start, Back. The first gamepad plugged in is player 1.
+Start, Back. The first gamepad plugged in is player 1 (`first_pad = 2` in the settings
+file gives it to player 2).
 
 | Shortcut | Action |
 |---|---|
@@ -106,7 +107,8 @@ comments:
 
 - `[player1]` and `[player2]`: `key.<action>` for keyboard keys and `pad.<action>` for gamepad
   buttons;
-- `[general]`: stick dead zone and trigger threshold;
+- `[general]`: stick dead zone, trigger threshold, and `first_pad = 2` to give the first
+  gamepad to player 2;
 - `[video]`: `filter = xbr | none`;
 - `[paths]`: the game folder and the CD image.
 

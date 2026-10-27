@@ -23,6 +23,7 @@ const uint16_t ctl_game_key[2][A_COUNT] = {
 uint16_t ctl_key[CTL_SDL_KEYS];
 uint16_t ctl_pad[2][P_COUNT];
 int ctl_deadzone = 16000, ctl_trigger = 12000;
+int ctl_first_pad = 0;                      // player (0 or 1) who gets the first gamepad
 bool ctl_filter = false;
 char cfg_game[1024], cfg_cd[1024];
 static char ini_path[1100];
@@ -93,6 +94,8 @@ static const char default_file[] =
 "stick_deadzone = 50\n"
 "# triggers (lt, rt): percentage of the travel before they count as pressed\n"
 "trigger_threshold = 40\n"
+"# player who gets the first gamepad plugged in (1 or 2); the next one goes to the other\n"
+"first_pad = 1\n"
 "\n"
 "[player1]\n"
 "key.up           = w\n"
@@ -190,6 +193,7 @@ static void parse(FILE *f, const char *path) {
             if (!strcmp(name, "filter")) { ctl_filter = strcmp(val, "none") != 0; continue; }
             if (!strcmp(name, "stick_deadzone")) ctl_deadzone = pct ? pct * 32767 / 100 : -1;
             else if (!strcmp(name, "trigger_threshold")) ctl_trigger = pct * 32767 / 100;
+            else if (!strcmp(name, "first_pad")) ctl_first_pad = atoi(val) == 2;
             else fprintf(stderr, "%s:%d: unknown setting '%s'\n", path, ln, name);
             continue;
         }

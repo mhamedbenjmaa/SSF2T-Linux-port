@@ -9,7 +9,7 @@ enum { P_LT = 15, P_RT = 16, P_COUNT = 17 };   // pad inputs: SDL buttons 0..14,
 extern const uint16_t ctl_game_key[2][A_COUNT];  // game scancode per player action
 extern uint16_t ctl_key[CTL_SDL_KEYS];           // SDL scancode -> game scancode (0 = none)
 extern uint16_t ctl_pad[2][P_COUNT];             // pad input -> mask of actions
-extern int ctl_deadzone, ctl_trigger;            // raw axis values; deadzone -1 = stick off
+extern int ctl_deadzone, ctl_trigger, ctl_first_pad;            // raw axis values; deadzone -1 = stick off
 
 #include <stdbool.h>
 extern bool ctl_filter;                          // xBR upscaling on

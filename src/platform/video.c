@@ -236,12 +236,14 @@ static void pad_event(const SDL_Event *ev) {
     memcpy(&id, ev->pad + 16, 4);
     if (ev->type == 0x653) {                       // gamepad added
         if (pad_slot(id) >= 0) return;
-        for (int p = 0; p < 2; p++)
+        for (int i = 0; i < 2; i++) {
+            int p = i ^ ctl_first_pad;             // first_pad = 2: player 2 first
             if (!pads[p].pad) {
                 pads[p] = (Pad){ .id = id, .pad = S.OpenGamepad(id) };
                 if (pads[p].pad) fprintf(stderr, "gamepad %d: %s\n", p + 1, S.GetGamepadName(pads[p].pad));
                 return;
             }
+        }
         return;
     }
     int p = pad_slot(id);
